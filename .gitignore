@@ -3,6 +3,7 @@
 /bin/
 bin-int/
 Debug/
+RTIOW/Debug
 
 # Files
 *.user

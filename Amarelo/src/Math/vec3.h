@@ -50,12 +50,12 @@ struct vec3
 
 	}
 
-	float Length()
+	float Length() const
 	{
 		return sqrt(x * x + y * y + z * z);
 	}
 
-	float Length2()
+	float Length2() const
 	{
 		return (x * x + y * y + z * z);
 	}
@@ -80,7 +80,7 @@ struct vec3
 			return vec;	
 	}
 
-	vec3<T> Normalized()
+	vec3<T> Normalized() const
 	{
 		float length = this->Length();
 

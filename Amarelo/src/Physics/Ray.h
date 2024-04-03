@@ -4,7 +4,7 @@
 class Ray {
 	public:
 		Ray(const vec3<float>& origin, const vec3<float>& direction)
-			: m_Origin(origin), m_Direction(direction)
+			: m_Origin(origin), m_Direction(direction.Normalized())
 		{}
 	
 		inline vec3<float> GetOrigin() const { return m_Origin; }

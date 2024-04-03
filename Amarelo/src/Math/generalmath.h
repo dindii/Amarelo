@@ -1,10 +1,15 @@
 #pragma once
 #include <stdint.h>
 #include <cmath>
-#define GM_PI 3.14159265359
+#include <limits>
 
-namespace MC
+
+namespace Amrl
 {
+
+	const double g_AmrlPI = 3.1415926535897932385;
+	const double g_AmrlInfinity = std::numeric_limits<double>::infinity();
+
 	inline int clamp(const int min, const int max, const int val)
 	{
 		int aux = 0;
@@ -35,12 +40,12 @@ namespace MC
 
 	inline float toDegrees(const float radians)
 	{
-		return (float)(radians * (180.0f / GM_PI));
+		return (float)(radians * (180.0f / g_AmrlPI));
 	}
 
 	inline float toRadians(const float degrees)
 	{
-		return (float)(degrees * (GM_PI / 180.0f));
+		return (float)(degrees * (g_AmrlPI / 180.0f));
 	}
 
 	inline float tan(const float angle)
@@ -89,7 +94,6 @@ namespace MC
 	{
 		return !mod ? x : x - mod * static_cast<long long>(x / mod);
 	}
-
-
-
 }
+
+

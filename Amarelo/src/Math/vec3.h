@@ -136,6 +136,11 @@ struct vec3
 		return *this;
 	}
 
+	vec3<T> operator-()
+	{
+		return vec3(-x, -y, -z);
+	}
+
 	vec3<T>& multiply(const vec3<T>& other)
 	{
 		x *= other.x;

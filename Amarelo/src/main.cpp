@@ -6,6 +6,10 @@
 #include "Rendering/Viewport.h"
 #include "Rendering/Camera.h"
 #include "Rendering/Viewport.h"
+#include <Physics/Shapes/Sphere.h>
+
+//just do speed up dev process
+#include <windows.h>
 
 int main()
 {
@@ -21,6 +25,9 @@ int main()
 	Viewport viewport(2.0f, aspectRatio * 2.0f, 1.0f);
 	Camera camera(vec3<float>(0.0f), &viewport);
 
+	HittableList sceneObjs;
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0f, -100.5f, -1.0f), 100.0f));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0f, 0.0f, -1.0f), 0.5f));
 
 	for (int32_t y = imageHeight - 1; y >= 0; y--)
 	{
@@ -36,13 +43,16 @@ int main()
 				camera.GetCameraViewport().GetHorizontal()  + v * 
 				camera.GetCameraViewport().GetVertical() - camera.GetCameraPosition());
 
-				vec3<uint8_t> finalColor = Color::CalculateRayColor(ray);
+				vec3<uint8_t> finalColor = Color::CalculateRayColor(ray, sceneObjs);
 				resultImage.SetPixel(finalColor);
 		}
 	}
 
 	resultImage.Flush();
 	std::cout << "\nDone!" << std::endl;
+
+	//just do speed up dev process
+	ShellExecute(NULL, "open", "resultImage.png", NULL, NULL, SW_SHOWDEFAULT);
 
 	return 0;
 }

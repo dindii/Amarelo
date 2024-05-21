@@ -2,10 +2,11 @@
 
 #include "HitRecord.h"
 #include <Physics/Ray.h>
+#include <Math/Interval.h>
 
 class Hittable
 {
 public: 
 	virtual ~Hittable() = default;
-	virtual bool Hit(const Ray& ray, const double AABB_min, const double AABB_max, HitRecord& rec) const = 0;
+	virtual bool Hit(const Ray& ray, const Interval& bounds, HitRecord& rec) const = 0;
 };

@@ -4,7 +4,6 @@
 #include <memory>
 #include <vector>
 
-
 class HittableList
 {
 public:
@@ -14,7 +13,7 @@ public:
 	void Clear() { m_Hittables.clear(); }
 	void Add(std::shared_ptr<Hittable> obj) { m_Hittables.push_back(obj); }
 	
-	bool Hit(const Ray& ray, double rayMin, double rayMax, HitRecord& result) const;
+	bool Hit(const Ray& ray, const Interval& bounds, HitRecord& result) const;
 
 
 

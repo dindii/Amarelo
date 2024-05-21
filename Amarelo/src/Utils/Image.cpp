@@ -1,7 +1,7 @@
 #include "Image.h"
 #define STB_IMAGE_WRITE_IMPLEMENTATION
 #include "Vendor/stb_image_write.h"
-
+#include <Math/generalmath.h>
 
 Image::Image(const std::string& filename, const uint32_t width, const uint32_t height, const uint8_t channels)
 	: m_Width(width), m_Height(height), m_Filename(filename), m_Channels(channels)
@@ -10,13 +10,15 @@ Image::Image(const std::string& filename, const uint32_t width, const uint32_t h
 	m_it = m_Data.begin();
 }
 
-bool Image::SetPixel(const vec3<uint8_t>& val)
+bool Image::SetPixel(const vec3<float>& val)
 {
+	vec3<uint8_t> byteColor = Amrl::ConvertColor(val);
+
 	if (m_it != m_Data.end())
 	{
-		*(m_it++) = val.r;
-		*(m_it++) = val.g;
-		*(m_it++) = val.b;
+		*(m_it++) = byteColor.r;
+		*(m_it++) = byteColor.g;
+		*(m_it++) = byteColor.b;
 		
 		return true;
 	}

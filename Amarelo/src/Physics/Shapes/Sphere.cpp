@@ -2,7 +2,7 @@
 
 #include <algorithm>
 
-bool Sphere::Hit(const Ray& ray, const double AABB_min, const double AABB_max, HitRecord& rec) const
+bool Sphere::Hit(const Ray& ray, const Interval& bounds, HitRecord& rec) const
 {
 	vec3<float> RayOrigin = ray.GetOrigin();
 	vec3<float> RayDirection = ray.GetDirection().Normalized();
@@ -18,16 +18,17 @@ bool Sphere::Hit(const Ray& ray, const double AABB_min, const double AABB_max, H
 		float p1 = t - x;
 		float p2 = t + x;
 
-		
-		if (p1 > AABB_min && p1 < AABB_max)
+		rec.t = p1;
+
+		if (bounds.Surrounds(p1))
 			rec.t = p1;
-		else if (p2 > AABB_min && p2 < AABB_max)
+		else if (bounds.Surrounds(p2))
 			rec.t = p2;
 		else
 			return false;
 
 		
-	//	rec.hitLocation = ray.At(rec.t);
+		//rec.hitLocation = ray.At(rec.t);
 		rec.hitLocation = ray.At(rec.t);
 		vec3 outwardNormal = (rec.hitLocation - m_Center).Normalized();
 		rec.SetFaceNormal(ray, outwardNormal);
@@ -37,3 +38,5 @@ bool Sphere::Hit(const Ray& ray, const double AABB_min, const double AABB_max, H
 
 	return false;
 }
+
+

@@ -2,7 +2,8 @@
 #include <stdint.h>
 #include <cmath>
 #include <limits>
-
+#include <Math/vec3.h>
+#include <random>
 
 namespace Amrl
 {
@@ -10,9 +11,28 @@ namespace Amrl
 	const double g_AmrlPI = 3.1415926535897932385;
 	const double g_AmrlInfinity = std::numeric_limits<double>::infinity();
 
-	inline int clamp(const int min, const int max, const int val)
+	template<typename T>
+	inline T Gen(T min, T max)
 	{
-		int aux = 0;
+		static std::uniform_real_distribution<T> dist(min, max);
+		static std::mt19937 generator;
+
+		return static_cast<T>(dist(generator));
+	}
+
+	inline vec3<uint8_t> ConvertColor(const vec3<float>& pixelColor)
+	{
+		uint8_t ir = static_cast<uint8_t>(255.999 * pixelColor.r);
+		uint8_t ig = static_cast<uint8_t>(255.999 * pixelColor.g);
+		uint8_t ib = static_cast<uint8_t>(255.999 * pixelColor.b);
+
+		return { ir, ig, ib };
+	}
+
+	template<typename T> 
+	inline int clamp(const T min, const T max, const T val)
+	{
+		T aux = 0;
 
 		if (val < min)
 		{

@@ -9,7 +9,10 @@ public:
 	Image() : m_Width(0), m_Height(0), m_Channels(0) {};
 	Image(const std::string& filename, const uint32_t width, const uint32_t height, const uint8_t channels);
 
-	bool SetPixel(const vec3<uint8_t>& val);
+	inline uint32_t GetHeight() const { return m_Height; }
+	inline uint32_t GetWidth() const { return m_Width; }
+
+	bool SetPixel(const vec3<float>& val);
 
 	void Flush();
 

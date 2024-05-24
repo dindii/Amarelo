@@ -20,6 +20,41 @@ namespace Amrl
 		return static_cast<T>(dist(generator));
 	}
 
+	inline vec3<float> Random(float min, float max)
+	{
+		float x = Gen<float>(min, max);
+		float y = Gen<float>(min, max);
+		float z = Gen<float>(min, max);
+
+		return vec3(x, y, z);
+	}
+
+	inline vec3<float> RandomInUnitSphere()
+	{
+		while (true)
+		{
+			vec3 point = Random(-1.0f, 1.0f);
+
+			if (point.Length2() < 1)
+				return point;
+		}
+	}
+
+	inline vec3<float> RandomUnitVector()
+	{
+		return RandomInUnitSphere().Normalized();
+	}
+
+	inline vec3<float> RandomOnHemisphere(const vec3<float>& normal)
+	{
+		vec3 onUnitSphere = RandomUnitVector();
+
+		if (vec3<float>::Dot(onUnitSphere, normal) > 0)
+			return onUnitSphere;
+
+		return -onUnitSphere;
+	}
+
 	inline vec3<uint8_t> ConvertColor(const vec3<float>& pixelColor)
 	{
 		uint8_t ir = static_cast<uint8_t>(255.999 * pixelColor.r);

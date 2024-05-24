@@ -3,24 +3,34 @@
 #include <Utils/Image.h>
 #include <iostream>
 
-vec3<float> Camera::RayColor(const Ray& ray, const HittableList& world) const
+vec3<float> Camera::RayColor(const Ray& ray, uint32_t maxBounces, const HittableList& world) const
 {
+	if (maxBounces <= 0)
+		return { 0.0f }; 
+
 	HitRecord result;
 
+
+	//If we hit something, we will bounce once again. This will happens until we reach the sky (i.e: hitting nothing). If we reach the sky, we will take the sky color (let's say, {1.0f, 1.0f, 1.0f}) and return it. Every return divides the result by half. 
+	//This simulates that the ray is losing energy on each bounce. So for every return (i.e: bounces) we halve the result. Rays that bounce once and then go straight up, are the ones that have the lowest number of halves, thus the brighter pixels.
+	//If we fail to hit something and reach the max bounce count, we will just return the color of the maxBounce, in our case, black. We will just halve the black and at the end the pixel is going to be black, this is rare though, eventually they always get up to the sky
+	//so even if it takes many bounces, we will just return a gray or dark gray (after halving many times).
+	//The return default color (maxBounces <= 0) doesn't matter much here, because after too many halves (when we exceed a high number eventually) will make the color always closer to black. So even if you select a bright white, it will end up as being black or very close to it.
+	//A way to confirm this is to reduce the number of bounces and select a custom color. If you select, for instance, a Purple and select 2 bounces, eventually we will get rays that can't reach the sky and they will be halved at most two times. By only halving 2x we still can see that it is purple,
+	//although being a darker version of the original purple (because of the halves).
 	if (world.Hit(ray, Interval(0, Amrl::g_AmrlInfinity), result))
 	{
-		vec3<float> normalColor = result.surfaceNormal;
-		normalColor = vec3<float>(normalColor.x + 1, normalColor.y + 1, normalColor.z + 1) * 0.5f;
-		return normalColor;
-		//return Amrl::ConvertColor(normalColor);
+		vec3 dir = Amrl::RandomOnHemisphere(result.surfaceNormal);
+
+		return 0.5f * RayColor(Ray(result.hitLocation, dir), (maxBounces - 1), world);
 	}
 
-	vec3<float> unitDirection = ray.GetDirection().Normalized();
-	float gradientPosition = (unitDirection.y + 1.0f) / 2.0f;
-	vec3<float> gradientColor = vec3<float>::lerp({ 1.0f, 1.0f, 1.0f }, { 0.5f, 0.7f, 1.0f }, gradientPosition);
-
-	//return Amrl::ConvertColor(gradientColor);
-	return gradientColor;
+		vec3<float> unitDirection = ray.GetDirection().Normalized();
+		float gradientPosition = (unitDirection.y + 1.0f) / 2.0f;
+		vec3<float> gradientColor = vec3<float>::lerp({ 1.0f, 1.0f, 1.0f }, { 0.5f, 0.7f, 1.0f }, gradientPosition);
+	
+		return gradientColor;
+		
 }
 
 void Camera::Render(const HittableList& world) const
@@ -38,7 +48,7 @@ void Camera::Render(const HittableList& world) const
 			for (int sample = 0; sample < m_SPP; sample++)
 			{
 				Ray ray = GenRay(x, y);
-				color += RayColor(ray, world);
+				color += RayColor(ray, 50, world);
 			}
 
 			outputImg->SetPixel(color  * m_SPPScale);

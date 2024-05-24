@@ -2,7 +2,6 @@
 #include <ostream>
 #include <sstream>
 
-
 //Para manter a simplicidade, não vou usar de templates ou classes bases/derivadas.
 
 template<typename T>
@@ -18,6 +17,7 @@ struct vec3
 		ss << "vec3: (" << x << ", " << y << ", " << z << ")";
 		return ss.str();
 	}
+
 
 	T Dot(const vec3<T>& other)
 	{
@@ -71,9 +71,9 @@ struct vec3
 
 	static vec3<T> Normalize(const vec3<float>& vec)
 	{
-		float lenght = vec3::Length(vec);
+		float length = vec3::Length(vec);
 
-		if (lenght)
+		if (length)
 			return vec3(vec.x / lenght, vec.y / lenght, vec.z / lenght);
 
 		else

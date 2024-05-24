@@ -22,7 +22,7 @@ public:
 
 	inline void AttachViewport(Viewport* viewport) { m_Viewport = viewport; }
 
-	vec3<float> RayColor(const Ray& ray, const HittableList& world) const;
+	vec3<float> RayColor(const Ray& ray, uint32_t maxBounces, const HittableList& world) const;
 	void Render(const HittableList& world) const;
 
 private:

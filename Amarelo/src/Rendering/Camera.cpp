@@ -20,7 +20,7 @@ vec3<float> Camera::RayColor(const Ray& ray, uint32_t maxBounces, const Hittable
 	//although being a darker version of the original purple (because of the halves).
 	if (world.Hit(ray, Interval(0.001, Amrl::g_AmrlInfinity), result))
 	{
-		vec3 dir = result.surfaceNormal + Amrl::RandomOnHemisphere(result.surfaceNormal);
+		vec3 dir = result.surfaceNormal + Amrl::RandomUnitVector();
 		return 0.5f * RayColor(Ray(result.hitLocation, dir), (maxBounces - 1), world);
 	}
 

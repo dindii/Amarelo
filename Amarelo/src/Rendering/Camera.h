@@ -37,6 +37,7 @@ private:
 	vec3<float>	 m_cameraForward;
 	
 	//samples per pixel on AA;
-	int m_SPP = 50;
+	int m_SPP = 100;
 	float  m_SPPScale = 1.0f / m_SPP;
+	int m_MaxBounces = 100;
 };

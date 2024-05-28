@@ -11,6 +11,14 @@ namespace Amrl
 	const double g_AmrlPI = 3.1415926535897932385;
 	const double g_AmrlInfinity = std::numeric_limits<double>::infinity();
 
+	inline double LinearToGama(double linear)
+	{
+		if(linear > 0)
+			return sqrt(linear);
+
+		return 0;
+	}
+
 	template<typename T>
 	inline T Gen(T min, T max)
 	{

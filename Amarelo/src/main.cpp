@@ -15,8 +15,8 @@ int main()
 	const float aspectRatio = 16.0f / 9.0f;
 	
 	//Image
-	//const uint32_t imageWidth = 2560;
-	const uint32_t imageWidth = 800;
+	const uint32_t imageWidth = 2560;
+	//const uint32_t imageWidth = 800;
 	const uint32_t imageHeight = static_cast<uint32_t>(imageWidth / aspectRatio);
 
 	Image resultImage("resultImage.png", imageWidth, imageHeight, 3);

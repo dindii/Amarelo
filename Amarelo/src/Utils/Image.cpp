@@ -12,7 +12,13 @@ Image::Image(const std::string& filename, const uint32_t width, const uint32_t h
 
 bool Image::SetPixel(const vec3<float>& val)
 {
-	vec3<uint8_t> byteColor = Amrl::ConvertColor(val);
+	vec3<float> gammaCorrectedColor(0.0f, 0.0f, 0.0f); 
+
+	gammaCorrectedColor.r = Amrl::LinearToGama(val.r);
+	gammaCorrectedColor.g = Amrl::LinearToGama(val.g);
+	gammaCorrectedColor.b = Amrl::LinearToGama(val.b);
+
+	vec3<uint8_t> byteColor = Amrl::ConvertColor(gammaCorrectedColor);
 
 	if (m_it != m_Data.end())
 	{

@@ -4,6 +4,8 @@
 #include <Physics/Ray.h>
 #include <Physics/HittableList.h>
 
+namespace Amrl
+{
 
 class Camera
 {
@@ -41,3 +43,4 @@ private:
 	float  m_SPPScale = 1.0f / m_SPP;
 	int m_MaxBounces = 100;
 };
+}

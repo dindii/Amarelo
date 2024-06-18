@@ -7,16 +7,21 @@
 #include "Rendering/Viewport.h"
 #include <Physics/Shapes/Sphere.h>
 
+#include <Rendering/Material.h>
+#include <Rendering/Lambertian.h>
+#include <Rendering/Metal.h>
+
 //just do speed up dev process
 #include <windows.h>
+using namespace Amrl;
 
 int main()
 {
 	const float aspectRatio = 16.0f / 9.0f;
 	
 	//Image
-	const uint32_t imageWidth = 2560;
-	//const uint32_t imageWidth = 800;
+	//const uint32_t imageWidth = 2560;
+	const uint32_t imageWidth = 200;
 	const uint32_t imageHeight = static_cast<uint32_t>(imageWidth / aspectRatio);
 
 	Image resultImage("resultImage.png", imageWidth, imageHeight, 3);
@@ -32,8 +37,18 @@ int main()
 	Camera camera(vec3<float>(0.0f, 0.0f, 0.0f), &viewport);
 
 	HittableList sceneObjs;
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0f, 0.0f, -1.0f), 0.5f));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0f, -100.5f, -1.0f), 100.0f));
+
+	Amrl::Material* material_ground = new Amrl::Lambertian({ 0.8, 0.8, 0.0 });
+	Amrl::Material* material_center = new Amrl::Lambertian({ 0.1, 0.2, 0.5 });
+	Amrl::Material* material_left = new Amrl::Metal({ 0.8, 0.8, 0.8 }, 0.3f);
+	Amrl::Material* material_right = new Amrl::Metal({ 0.8, 0.6, 0.2 }, 1.0f);
+	Amrl::Material* material_middle_right = new Amrl::Metal({ 0.8, 0.6, 0.2 }, 0.01f);
+
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0, -100.5, -1.0), 100.0, material_ground));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0, 0.0, -1.2), 0.5, material_center));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(-1.0, 0.0, -1.0), 0.5, material_left));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(1.0, 0.0, -1.0), 0.5, material_right));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.4, -0.35, -0.8), 0.1, material_middle_right));
 
 	camera.Render(sceneObjs);
 

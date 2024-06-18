@@ -4,9 +4,12 @@
 #include <Physics/Ray.h>
 #include <Math/Interval.h>
 
+namespace Amrl
+{
 class Hittable
 {
 public: 
 	virtual ~Hittable() = default;
 	virtual bool Hit(const Ray& ray, const Interval& bounds, HitRecord& rec) const = 0;
 };
+}

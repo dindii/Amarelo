@@ -29,6 +29,11 @@ struct vec3
 		return first.x * second.x + first.y * second.y + first.z * second.z;
 	}
 
+	static inline vec3<T> Reflect(const vec3<T>& vector, const vec3<T>& normal)
+	{
+		return vector - 2.0f * Dot(vector, normal) * normal;
+	}
+
 	vec3<T> Max(const vec3<T>& other) const
 	{
 		vec3<T> result;
@@ -37,6 +42,12 @@ struct vec3
 			result[x] = elements[x] > other[x] ? elements[x] : other[x];
 
 		return result;
+	}
+
+	bool NearZero() const
+	{
+		double s = 1e-8;
+		return (std::fabs(x) < s) && (std::fabs(y) < s) && (std::fabs(z) < s);
 	}
 
 	float Max() const

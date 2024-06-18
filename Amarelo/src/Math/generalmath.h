@@ -8,10 +8,10 @@
 namespace Amrl
 {
 
-	const double g_AmrlPI = 3.1415926535897932385;
-	const double g_AmrlInfinity = std::numeric_limits<double>::infinity();
+	const float g_AmrlPI = 3.1415926f;
+	const float g_AmrlInfinity = std::numeric_limits<float>::infinity();
 
-	inline double LinearToGama(double linear)
+	inline float LinearToGama(float linear)
 	{
 		if(linear > 0)
 			return sqrt(linear);
@@ -22,10 +22,7 @@ namespace Amrl
 	template<typename T>
 	inline T Gen(T min, T max)
 	{
-		static std::uniform_real_distribution<T> dist(min, max);
-		static std::mt19937 generator;
-
-		return static_cast<T>(dist(generator));
+		return min + (max - min) * (rand() / (RAND_MAX + 1.0));
 	}
 
 	inline vec3<float> Random(float min, float max)
@@ -33,8 +30,8 @@ namespace Amrl
 		float x = Gen<float>(min, max);
 		float y = Gen<float>(min, max);
 		float z = Gen<float>(min, max);
-
-		return vec3(x, y, z);
+		
+		return { x, y, z };
 	}
 
 	inline vec3<float> RandomInUnitSphere()
@@ -42,8 +39,8 @@ namespace Amrl
 		while (true)
 		{
 			vec3 point = Random(-1.0f, 1.0f);
-
-			if (point.Length2() < 1)
+			
+			if (point.Length2() < 1.0f)
 				return point;
 		}
 	}
@@ -57,7 +54,7 @@ namespace Amrl
 	{
 		vec3 onUnitSphere = RandomUnitVector();
 
-		if (vec3<float>::Dot(onUnitSphere, normal) > 0)
+		if (vec3<float>::Dot(onUnitSphere, normal) > 0.0f)
 			return onUnitSphere;
 
 		return -onUnitSphere;
@@ -73,7 +70,7 @@ namespace Amrl
 	}
 
 	template<typename T> 
-	inline int clamp(const T min, const T max, const T val)
+	inline T clamp(const T min, const T max, const T val)
 	{
 		T aux = 0;
 
@@ -151,9 +148,9 @@ namespace Amrl
 	{
 		return fabsf(val - roundf(val));
 	}
-	//Module for doubles
+	//Module for floats
 	template<typename T, typename U>
-	constexpr double dmod(T x, U mod)
+	constexpr float dmod(T x, U mod)
 	{
 		return !mod ? x : x - mod * static_cast<long long>(x / mod);
 	}

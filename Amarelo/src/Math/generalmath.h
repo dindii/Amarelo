@@ -19,6 +19,15 @@ namespace Amrl
 		return 0;
 	}
 
+	static float SchlickReflectance(float cosine, float refractionIndex)
+	{
+		float r0 = (1 - refractionIndex) / (1 + refractionIndex);
+
+		r0 = r0 * r0;
+
+		return r0 + (1 - r0) * pow((1 - cosine), 5);
+	}
+
 	template<typename T>
 	inline T Gen(T min, T max)
 	{

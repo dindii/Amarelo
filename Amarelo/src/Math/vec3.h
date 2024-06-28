@@ -31,8 +31,18 @@ struct vec3
 
 	static inline vec3<T> Reflect(const vec3<T>& vector, const vec3<T>& normal)
 	{
-		return vector - 2.0f * Dot(vector, normal) * normal;
+		return vector + (-2.0f * Dot(vector, normal) * normal);
 	}
+
+	static inline vec3<T> Refract(const vec3<T>& unitVector, const vec3<T>& normal, float refractionIndex)
+	{
+		float cosTheta = fmin(Dot(-unitVector, normal), 1.0f);
+		vec3 refractedX = refractionIndex * (unitVector + cosTheta * normal);
+		vec3 refractedY = -sqrt(fabs(1.0f - refractedX.Length2())) * normal;
+
+		return refractedX + refractedY;
+	}
+
 
 	vec3<T> Max(const vec3<T>& other) const
 	{
@@ -230,6 +240,16 @@ struct vec3
 	bool operator!=(const vec3<T>& other)
 	{
 		return !(*this == other);
+	}
+
+	vec3<T> operator-() const
+	{
+		vec3<T> negVec;
+		negVec.x = -x;
+		negVec.y = -y;
+		negVec.z = -z;
+
+		return negVec;
 	}
 
 	friend std::ostream& operator<<(std::ostream& os, const vec3<T>& vec)

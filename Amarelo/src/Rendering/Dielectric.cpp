@@ -6,7 +6,7 @@ namespace Amrl
 {
 	bool Dielectric::Scatter(const Ray& inputRay, const HitRecord& result, vec3<float>& attenuation, Ray& scatteredRay) const
 	{
-		attenuation = vec3<float>(1.0f, 0.6f, 1.0f);
+		attenuation = vec3<float>(1.0f, 1.0f, 1.0f);
 
 		double refractionIndex = result.frontFace ? (1.0f / m_RefractionIndex) : m_RefractionIndex;
 

@@ -95,7 +95,7 @@ struct vec3
 		float length = vec3::Length(vec);
 
 		if (length)
-			return vec3(vec.x / lenght, vec.y / lenght, vec.z / lenght);
+			return vec3(vec.x / length, vec.y / length, vec.z / length);
 
 		else
 			return vec;	

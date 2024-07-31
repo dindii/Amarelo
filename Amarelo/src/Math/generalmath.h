@@ -114,7 +114,7 @@ namespace Amrl
 
 	inline float toRadians(const float degrees)
 	{
-		return (float)(degrees * (g_AmrlPI / 180.0f));
+		return (float)(degrees * g_AmrlPI / 180.0f);
 	}
 
 	inline float tan(const float angle)

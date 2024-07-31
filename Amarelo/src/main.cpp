@@ -17,25 +17,18 @@
 using namespace Amrl;
 
 int main()
-{
-	const float aspectRatio = 16.0f / 9.0f;
-	
-	//Image
-	const uint32_t imageWidth = 2560;
-	//const uint32_t imageWidth = 200;
-	const uint32_t imageHeight = static_cast<uint32_t>(imageWidth / aspectRatio);
+{	
+	ViewportProperties viewportProp;
+	viewportProp.imageWidth = 200;
+	viewportProp.aspectRatio = 16.0f / 9.0f;
+	viewportProp.lookFrom = { -2.0f, 2.0f, 1.0f };
+	viewportProp.lookAt = { 0.0f, 0.0f, -1.1f };
+	viewportProp.lookUp = { 0.0f, 1.0f, 0.0f };
+	viewportProp.fieldOfView = 90.0f;
 
-	Image resultImage("resultImage.png", imageWidth, imageHeight, 3);
-
-	//Camera
-	//Viewport viewport(2.0f, aspectRatio * 2.0f, 1.0f);
-	float focalLength = 1.0f;
-	float viewportHeight = 2.0f;
-	float viewportWidth = viewportHeight * ((float)imageWidth / (float)imageHeight);
-
-	Viewport viewport(viewportHeight, viewportWidth, 1.0f, imageHeight, imageWidth);
-	viewport.AttachOutputImage(&resultImage);
-	Camera camera(vec3<float>(0.0f, 0.0f, 0.0f), &viewport);
+	//#TODO - Explain focal length
+	//#TODO - Understand better TAN
+	Camera camera(viewportProp);
 
 	HittableList sceneObjs;
 

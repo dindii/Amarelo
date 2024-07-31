@@ -57,12 +57,10 @@ vec3<float> Camera::RayColor(const Ray& ray, uint32_t maxBounces, const Hittable
 
 void Camera::Render(const HittableList& world) const
 {
-	Image* outputImg = m_Viewport->GetOutputImage();
-
-	for (int32_t y = outputImg->GetHeight() - 1; y >= 0; y--)
+	for (int32_t y = m_Framebuffer->GetHeight() - 1; y >= 0; y--)
 	{
 		std::cout << "\rColumns lefting: " << y << ' ' << std::flush;
-		for (uint32_t x = 0; x < outputImg->GetWidth(); x++)
+		for (uint32_t x = 0; x < m_Framebuffer->GetWidth(); x++)
 		{
 		
 			vec3<float> color = 0;
@@ -73,13 +71,11 @@ void Camera::Render(const HittableList& world) const
 				color += RayColor(ray, m_MaxBounces, world);
 			}
 
-			outputImg->SetPixel(color  * m_SPPScale);
+			m_Framebuffer->SetPixel(color  * m_SPPScale);
 		}
 	}
 
-	
-
-	outputImg->Flush();
+	m_Framebuffer->Flush();
 	std::cout << "\nDone!" << std::endl;
 }
 
@@ -93,10 +89,9 @@ Ray Camera::GenRay(int32_t x, int32_t y) const
 {
 	vec3<float> randomOffset = SampleSquare();
 
-	vec3<float> rayOrigin = vec3<float>(0.0f, 0.0f, 0.0f);
+	vec3<float> rayOrigin = m_CameraPosition;
 
-	vec3<float> sample = m_Viewport->m_FirstPixelLoc + ((x + randomOffset.x) * m_Viewport->m_PixelDeltaU) + ((y + randomOffset.y) * m_Viewport->m_PixelDeltaV);
-
+	vec3<float> sample = m_FirstPixelLoc + ((x + randomOffset.x) * m_PixelDeltaU) + ((y + randomOffset.y) * m_PixelDeltaV);
 
 	vec3<float> rayDir = sample - rayOrigin;
 	rayDir = rayDir.Normalized();

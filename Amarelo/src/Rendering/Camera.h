@@ -27,9 +27,10 @@ public:
 		m_Width = properties.imageWidth;
 		m_Height = properties.imageHeight = static_cast<uint32_t>(properties.imageWidth / properties.aspectRatio);
 
-		vec3<float> basisRight(0.0f);  //u
-		vec3<float> basisUp(0.0f);	 //v
-		vec3<float> basisView(0.0f);   //w (opposite view dir)
+			vec3<float> basisRight(0.0f);  //u
+			vec3<float> basisUp(0.0f);	 //v
+			vec3<float> basisView(0.0f);   //w (opposite view dir)
+
 
 		m_CameraPosition = properties.lookFrom;
 
@@ -43,18 +44,19 @@ public:
 		float h = std::tan(theta / 2.0f);
 		float viewportHeight = 2.0f * h * focalLength;
 		float viewportWidth = viewportHeight * ((float)properties.imageWidth / (float)properties.imageHeight);
-
+		
 		basisView = vec3<float>::Normalize(properties.lookFrom - properties.lookAt);
 		basisRight = vec3<float>::Normalize(vec3<float>::Cross(properties.lookUp, basisView));
-		basisUp = vec3<float>::Cross(basisView, basisRight);
-
-		m_ViewportU = vec3<float>(viewportWidth, 0.0f, 0.0f)  * basisRight;
-		m_ViewportV = vec3<float>(0.0f, viewportHeight, 0.0f) * basisUp;
-
+		basisUp = vec3<float>::Normalize(vec3<float>::Cross(basisView, basisRight));
+		
+		m_ViewportU = viewportWidth * basisRight;
+		m_ViewportV = viewportHeight * basisUp;
+		
 		m_PixelDeltaU = m_ViewportU / properties.imageWidth;
 		m_PixelDeltaV = m_ViewportV / properties.imageHeight;
-
+		
 		m_ViewportUpperLeft = m_CameraPosition - (focalLength * basisView) - m_ViewportU / 2.0f - m_ViewportV / 2.0f;
+		
 		m_FirstPixelLoc = m_ViewportUpperLeft + 0.5f * (m_PixelDeltaU + m_PixelDeltaV);
 
 		m_Framebuffer = new Image("resultImage.png", m_Width, m_Height, 3);

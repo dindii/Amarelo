@@ -13,6 +13,7 @@ public:
 	inline uint32_t GetWidth() const { return m_Width; }
 
 	bool SetPixel(const vec3<float>& val);
+	bool SetPixel(uint32_t x, uint32_t y, const vec3<float>& val);
 
 	void Flush();
 

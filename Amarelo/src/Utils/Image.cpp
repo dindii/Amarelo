@@ -32,7 +32,27 @@ bool Image::SetPixel(const vec3<float>& val)
 	return false;
 }
 
+bool Image::SetPixel(uint32_t x, uint32_t y, const vec3<float>& val)
+{
+	vec3<float> gammaCorrectedColor(0.0f, 0.0f, 0.0f);
+
+	gammaCorrectedColor.r = Amrl::LinearToGama(val.r);
+	gammaCorrectedColor.g = Amrl::LinearToGama(val.g);
+	gammaCorrectedColor.b = Amrl::LinearToGama(val.b);
+
+	vec3<uint8_t> byteColor = Amrl::ConvertColor(gammaCorrectedColor);
+
+	uint32_t idx = (y * m_Width + x) * m_Channels;
+
+	m_Data[idx++] = byteColor.r;
+	m_Data[idx++] = byteColor.g;
+	m_Data[idx]	  = byteColor.b;
+
+	return true;
+}
+
 void Image::Flush()
 {
+	stbi_flip_vertically_on_write(true);
 	stbi_write_png(m_Filename.c_str(), m_Width, m_Height, m_Channels, m_Data.data(), m_Width * m_Channels);
 }

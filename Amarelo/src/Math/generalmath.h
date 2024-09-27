@@ -54,6 +54,12 @@ namespace Amrl
 		}
 	}
 
+	inline vec3<float> RandomInUnitDisk()
+	{
+		vec3<float> sphere = RandomInUnitSphere();
+		return { sphere.x, sphere.y, 0.0f };
+	}
+
 	inline vec3<float> RandomUnitVector()
 	{
 		return RandomInUnitSphere().Normalized();

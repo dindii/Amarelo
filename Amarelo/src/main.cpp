@@ -12,42 +12,84 @@
 #include <Rendering/Metal.h>
 #include <Rendering/Dielectric.h>
 
-//just do speed up dev process
+//just do speed up iteration times
+#if defined(_WIN64)	|| defined(_WIN32)
 #include <windows.h>
+#endif
+
 using namespace Amrl;
 
 int main()
 {	
 	ViewportProperties viewportProp;
-	viewportProp.imageWidth = 200;
+	viewportProp.imageWidth = 600;
 	viewportProp.aspectRatio = 16.0f / 9.0f;
-	viewportProp.lookFrom = { -2.0f, 2.0f, 1.0f };
-	viewportProp.lookAt = { 0.0f, 0.0f, -1.1f };
+	viewportProp.lookFrom = { 13.0f, 2.0f, 3.0f };
+	viewportProp.lookAt = { 0.0f, 0.0f, 0.0f };
 	viewportProp.lookUp = { 0.0f, 1.0f, 0.0f };
-	viewportProp.fieldOfView = 90.0f;
+	viewportProp.fieldOfView = 20.0f;
 
-	//#TODO - Explain focal length
-	//#TODO - Understand better TAN
 	Camera camera(viewportProp);
 
 	HittableList sceneObjs;
 
-	Amrl::Material* material_ground = new Amrl::Lambertian({ 0.8, 0.8, 0.0 });
-	Amrl::Material* material_center = new Amrl::Lambertian({ 0.1, 0.2, 0.5 });
-	Amrl::Material* material_left = new Amrl::Dielectric(1.50f);
-	Amrl::Material* material_right = new Amrl::Metal({ 0.8, 0.6, 0.2 }, 1.0f);
-	Amrl::Material* material_middle_right = new Amrl::Metal({ 0.8, 0.6, 0.2 }, 0.01f);
 
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0, -100.5, -1.0), 100.0, material_ground));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0, 0.0, -1.2), 0.5, material_center));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(-1.0, 0.0, -1.0), 0.5, material_left));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(1.0, 0.0, -1.0), 0.5, material_right));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.4, -0.35, -0.8), 0.1, material_middle_right));
+	Amrl::Material* ground_material = new Lambertian({ 0.5, 0.5, 0.5 });
 
-	camera.Render(sceneObjs);
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0, -1000, 0), 1000, ground_material));
 
-	//just do speed up dev process
+	//for (int a = -11; a < 11; a++)
+	//{
+	//	for (int b = -11; b < 11; b++)
+	//	{
+	//		float choose_mat = Gen(0.0f, 1.0f);
+	//		vec3<float> center(a + 0.9 * Gen(0.0f, 1.0f), 0.2, b + 0.9*Gen(0.0f, 1.0f));
+	//
+	//		if ((center - vec3<float>(4, 0.2, 0)).Length() > 0.9)
+	//		{
+	//			Amrl::Material* sphere_material;
+	//
+	//			if (choose_mat < 0.8)
+	//			{
+	//				// diffuse
+	//				vec3<float> albedo = Random(0.0f, 1.0f) * Random(0.0f, 1.0f);
+	//				sphere_material = new Lambertian(albedo);
+	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
+	//			}
+	//			else if (choose_mat < 0.95)
+	//			{
+	//				// metal
+	//				vec3<float> albedo = Random(0.5, 1);
+	//				float fuzz = Gen(0.0f, 0.5f);
+	//				sphere_material = new Metal(albedo, fuzz);
+	//
+	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
+	//			}
+	//			else
+	//			{
+	//				// glass
+	//				sphere_material = new Dielectric(1.5);
+	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
+	//			}
+	//		}
+	//	}
+	//}
+
+	auto material1 = new Dielectric(1.5);
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0, 1, 0), 1.0, material1));
+
+	auto material2 = new Lambertian((0.4, 0.2, 0.1));
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(-4, 1, 0), 1.0, material2));
+
+	auto material3 = new Metal((0.7, 0.6, 0.5), 0.0);
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(4, 1, 0), 1.0, material3));
+
+	camera.Render(&sceneObjs);
+
+	//just do speed up iteration times
+#if defined(_WIN64)	|| defined(_WIN32)
 	ShellExecute(NULL, "open", "resultImage.png", NULL, NULL, SW_SHOWDEFAULT);
+#endif
 
 	return 0;
 }

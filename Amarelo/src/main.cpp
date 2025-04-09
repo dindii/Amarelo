@@ -22,7 +22,7 @@ using namespace Amrl;
 int main()
 {	
 	ViewportProperties viewportProp;
-	viewportProp.imageWidth = 600;
+	viewportProp.imageWidth = 2560;
 	viewportProp.aspectRatio = 16.0f / 9.0f;
 	viewportProp.lookFrom = { 13.0f, 2.0f, 3.0f };
 	viewportProp.lookAt = { 0.0f, 0.0f, 0.0f };
@@ -34,55 +34,22 @@ int main()
 	HittableList sceneObjs;
 
 
-	Amrl::Material* ground_material = new Lambertian({ 0.5, 0.5, 0.5 });
+	Amrl::Material* ground_material = new Lambertian({ 0.1, 0.1, 0.2 });
 
 	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0, -1000, 0), 1000, ground_material));
 
-	//for (int a = -11; a < 11; a++)
-	//{
-	//	for (int b = -11; b < 11; b++)
-	//	{
-	//		float choose_mat = Gen(0.0f, 1.0f);
-	//		vec3<float> center(a + 0.9 * Gen(0.0f, 1.0f), 0.2, b + 0.9*Gen(0.0f, 1.0f));
-	//
-	//		if ((center - vec3<float>(4, 0.2, 0)).Length() > 0.9)
-	//		{
-	//			Amrl::Material* sphere_material;
-	//
-	//			if (choose_mat < 0.8)
-	//			{
-	//				// diffuse
-	//				vec3<float> albedo = Random(0.0f, 1.0f) * Random(0.0f, 1.0f);
-	//				sphere_material = new Lambertian(albedo);
-	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
-	//			}
-	//			else if (choose_mat < 0.95)
-	//			{
-	//				// metal
-	//				vec3<float> albedo = Random(0.5, 1);
-	//				float fuzz = Gen(0.0f, 0.5f);
-	//				sphere_material = new Metal(albedo, fuzz);
-	//
-	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
-	//			}
-	//			else
-	//			{
-	//				// glass
-	//				sphere_material = new Dielectric(1.5);
-	//				sceneObjs.Add(std::make_shared<Sphere>(center, 0.2, sphere_material));
-	//			}
-	//		}
-	//	}
-	//}
 
-	auto material1 = new Dielectric(1.5);
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0, 1, 0), 1.0, material1));
+	auto material1 = new Lambertian({ 139.0f / 255, 0.0f, 0.0f });
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(4, 1, -1), 1.0, material1));
+	
+	auto material2 = new Lambertian({ (91.f / 255.f), (194.f / 255.f), (231.f / 255.f) });
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(-4, 1, -1), 1.0, material2));
+	
+	auto material3 = new Lambertian({(247.f / 255.f), (150 / 255.f), (15.f /255.f)});
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(0.0, 1, -1), 1.0, material3));
 
-	auto material2 = new Lambertian((0.4, 0.2, 0.1));
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(-4, 1, 0), 1.0, material2));
-
-	auto material3 = new Metal((0.7, 0.6, 0.5), 0.0);
-	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(4, 1, 0), 1.0, material3));
+	auto material4 = new Dielectric(1.2f, { 0.4f, 0.0f, 0.35f });
+	sceneObjs.Add(std::make_shared<Sphere>(vec3<float>(5.0, 0.8, 2.8), 0.8, material4));
 
 	camera.Render(&sceneObjs);
 

@@ -29,8 +29,8 @@ public:
 		m_Height = properties.imageHeight = static_cast<uint32_t>(properties.imageWidth / properties.aspectRatio);
 
 		vec3<float> basisRight(0.0f);  //u
-		vec3<float> basisUp(0.0f);	 //v
-		vec3<float> basisView(0.0f);   //w (opposite view dir)
+		vec3<float> basisUp(0.0f);	   //v
+		vec3<float> basisView(0.0f);   //w 
 
 
 		m_CameraPosition = properties.lookFrom;
@@ -83,7 +83,7 @@ private:
 private:
 	
 	//samples per pixel on AA;
-	const int m_SPP = 100;
+	const int m_SPP = 500;
 	const float  m_SPPScale = 1.0f / m_SPP;
 	const int m_MaxBounces = 50;
 	const int m_NumThreads = 8;
